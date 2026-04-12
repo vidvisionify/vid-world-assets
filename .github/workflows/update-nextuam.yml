@@ -1,0 +1,23 @@
+name: Update nextuam
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 2 AM Central (approx, UTC-5/6)
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run script
+        run: node scripts/updateNext.js
+
+      - name: Commit
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@bot.com"
+          git add .
+          git commit -m "Auto update poster" || echo "No changes"
+          git push
